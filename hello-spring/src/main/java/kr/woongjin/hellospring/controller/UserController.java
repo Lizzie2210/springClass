@@ -22,11 +22,11 @@ public class UserController  {
 	private UserService userService;
 	
 	
-	
+	   
 	@GetMapping("/greet")
 	@ResponseBody // 응답 자체를 jsp 말고 바디 자체를 응답해주세요.
 	public String hello() {
-		return "hello world";
+		return " hello world";
 	}
 	
 	@GetMapping("/users")//사용자 전체보기 
