@@ -58,8 +58,8 @@ public class UserController  {
 	//사용자 등록 -json 방식
 	@PostMapping("/users")
 	@ResponseBody
-	public User registUser(@RequestBody User user ) { 
-		return  user;
+	public User registUser(@RequestBody User user) { 
+		return  userService.registUser(user);
 	}
 	//사용자 삭제
 	//사용자 수정

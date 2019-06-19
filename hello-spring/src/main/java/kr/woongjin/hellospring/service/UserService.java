@@ -7,5 +7,6 @@ import kr.woongjin.hellospring.model.User;
 public interface UserService {
 	public User searchUserByUserId(Integer userId); 
 	public List<User> searchUsers();
+	public User registUser(User user);
 	
 }
