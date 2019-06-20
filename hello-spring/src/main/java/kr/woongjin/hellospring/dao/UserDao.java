@@ -21,7 +21,7 @@ public class UserDao {
 	//db연동 에이전시  mybatis에는 세션 템플릿이 존재한다. 
 	
 	public User selectUserByKey(Integer userId) {
-		String sql = "SELECT * FRO USER WHERE USERID = ? ";
+		String sql = "SELECT * FROM USER WHERE USERID = ? ";
 		User user = null;
 		try {
 			//데이터 확보 from anywhere 
