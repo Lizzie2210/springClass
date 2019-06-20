@@ -6,28 +6,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import kr.woongjin.hellospring.exception.BizException;
 import kr.woongjin.hellospring.model.User;
 
 @Repository
 public class UserDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	//db연동 에이전시  mybatis에는 세션 템플릿이 존재한다. 
 	
 	public User selectUserByKey(Integer userId) {
-		//데이터 확보 from anywhere 
-		User user = jdbcTemplate.queryForObject("SELECT * FROM USER WHERE USERID = ? ",new RowMapper<User>(){
-
-			@Override
-			public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-				// TODO Auto-generated method stub
-				return new User(rs.getInt(1),rs.getString(2),rs.getInt(3));
-			}
-			
-		},userId);//하나데이터 조회
+		String sql = "SELECT * FRO USER WHERE USERID = ? ";
+		User user = null;
+		try {
+			//데이터 확보 from anywhere 
+			 user = jdbcTemplate.queryForObject(sql,new RowMapper<User>(){
+	
+				@Override
+				public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+					// TODO Auto-generated method stub
+					return new User(rs.getInt(1),rs.getString(2),rs.getInt(3));
+				}
+				
+			},userId);//하나데이터 조회
+		}catch(DataAccessException e) {
+			throw new BizException("사용자 상세조회 에러",e);
+		}
+		
 		return user;
 	}
 	

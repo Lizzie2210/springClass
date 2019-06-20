@@ -2,7 +2,8 @@ package kr.woongjin.hellospring.controller;
   
 import java.util.List;
 
-import org.springframework.beans.factory.InitializingBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory; 
 import org.springframework.beans.factory.annotation.Autowired; 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,20 +18,22 @@ import kr.woongjin.hellospring.service.UserService;
  
 
 @Controller 
+@ResponseBody
 public class UserController  {
 	@Autowired
 	private UserService userService;
 	
-	
+	private static final Logger log =  
+			LoggerFactory.getLogger(UserController.class); 
 	   
 	@GetMapping("/greet")
 	@ResponseBody // 응답 자체를 jsp 말고 바디 자체를 응답해주세요.
 	public String hello() {
+		log.debug("로그를 찍는다.");
 		return " hello world";
 	}
 	
-	@GetMapping("/users")//사용자 전체보기 
-	@ResponseBody
+	@GetMapping("/users")//사용자 전체보기  
 	public List<User> getAllUsers(@RequestParam(defaultValue="0") int userId,
 								  @RequestParam(value="page",defaultValue="0") int page){ 
 		System.out.println(userId +" " +page);
@@ -38,8 +41,7 @@ public class UserController  {
 	}
 	
 	//사용자 상세보기
-	@GetMapping("/users/{userId}")
-	@ResponseBody
+	@GetMapping("/users/{userId}") 
 	public User getUsersById(@PathVariable Integer userId){ //어차피 호출은 url이기 때문에 메소드 이름 자체를 설명적으로 만든다.//주석대신! 
 			System.out.println(userId + " .. from path variable");
 		return userService.searchUserByUserId(userId);
@@ -56,9 +58,9 @@ public class UserController  {
 		return new User(userId,userName,age);
 	}*/
 	//사용자 등록 -json 방식
-	@PostMapping("/users")
-	@ResponseBody
+	@PostMapping("/users") 
 	public User registUser(@RequestBody User user) { 
+		log.debug("사용자등록시");
 		return  userService.registUser(user);
 	}
 	//사용자 삭제
